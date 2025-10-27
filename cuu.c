@@ -1312,3 +1312,1049 @@ int main() {
     
     return 0;
 }
+//makeNull(T)
+void makeNull(Tree *t){
+    t->maxNode=-1;
+}
+//empty(T)
+int empty(Tree *t){
+    return t->maxNode==-1;
+}
+//parent(n, T)
+Node parent(Node n,Tree *t){
+    if(n<0||n>t->maxNode){
+        return -1;
+    }
+    return t->P[n];
+}
+//label(n, T)
+LabelType label(Node n,Tree *t){
+    if(n<0||n>t->maxNode){
+        return '4';
+    }
+    return t->L[n];
+}
+//root(T)
+Node root(Tree *t){
+    if(t->maxNode==-1){
+        return -1;
+    }
+    return 0;
+}
+//leftmostChild(n, T)
+Node leftmostChild(Node n,Tree *t){
+    if(n<0||t->maxNode==-1){
+        return -1;
+    }
+    for(int i=n+1;i<=t->maxNode;i++){
+        if(t->P[i]==n){
+            return i;
+        }
+    }
+    return -1;
+}
+//rightSibling(n, T)
+Node rightSibling(Node n,Tree *t){
+    if(n<0||n>t->maxNode){
+        return -1;
+    }
+    for(int i=n+1;i<=t->maxNode;i++){
+        if(t->P[i]==t->P[n]){
+            return i;
+        }
+    }
+    return -1;
+}
+//preorder(n, T)
+void preorder(Node n,Tree *t){
+    if(n<0||n>t->maxNode){
+        return;
+    }
+    printf("%c",label(n,t));
+    Node child=leftmostChild(n,t);
+    while(child!=-1){
+        printf(" ");
+        preorder(child,t);
+        child=rightSibling(child,t);
+    }
+}
+//inorder(n, T)
+void inorder(Node n,Tree *t){
+    if(n<0||n>t->maxNode){
+        return;
+    }
+    Node child=leftmostChild(n,t);
+    if (child != NULL_NODE) {
+        inorder(child, t);
+        printf(" ");
+    }
+    printf("%c",label(n,t));
+    child=rightSibling(child,t);
+    while(child!=-1){
+        printf(" ");
+        inorder(child,t);
+        child=rightSibling(child,t);
+    }
+}
+//postorder(n, T)
+void postorder(Node n,Tree *t){
+    if(n<0||n>t->maxNode){
+        return;
+    }
+    Node child=leftmostChild(n,t);
+    while(child!=-1){
+        postorder(child,t);
+        child=rightSibling(child,t);
+        if (child != -1 || n != -1) {
+            printf(" ");
+        }
+    }
+    printf("%c",label(n,t));
+}
+//height(n, T)
+int height(Node n,Tree *t){
+    if(n<0||n>t->maxNode){
+        return -1;
+    }
+    int Height=0;
+    Node child=leftmostChild(n,t);
+    while(child!=-1){
+        int childheight=height(child,t);
+        if(Height<childheight+1){
+           Height=childheight+1;
+        }
+        child=rightSibling(child,t);
+    }
+    return Height;
+}
+//depth(n, T)
+int depth(Node n, Tree *pT) {
+    if (n < 0 || n > pT->maxNode) {
+        return -1;
+    }
+    int Depth = 0;
+    Node temp = n;
+    while (pT->P[temp] != NULL_NODE) {
+        temp=pT->P[temp];
+        Depth++;
+    }
+    return Depth;
+}
+//Use the snippet below to read a tree from stdin
+#include <stdio.h>
+
+#define MAXLENGTH 100
+#define NULL_NODE -1
+
+typedef int Node;
+typedef char LabelType;
+
+typedef struct {
+    Node      P[MAXLENGTH];
+    LabelType L[MAXLENGTH];
+    int maxNode;
+} Tree;
+void makeNull(Tree *t){
+    t->maxNode=-1;
+}
+int empty(Tree *t){
+    return t->maxNode==-1;
+}
+Node parent(Node n,Tree *t){
+    if(n<0||n>t->maxNode){
+        return -1;
+    }
+    return t->P[n];
+}
+LabelType label(Node n,Tree *t){
+    if(n<0||n>t->maxNode){
+        return '4';
+    }
+    return t->L[n];
+}
+Node root(Tree *t){
+    if(t->maxNode==-1){
+        return -1;
+    }
+    return 0;
+}
+Node leftmostChild(Node n,Tree *t){
+    if(n<0||t->maxNode==-1){
+        return -1;
+    }
+    for(int i=n+1;i<=t->maxNode;i++){
+        if(t->P[i]==n){
+            return i;
+        }
+    }
+    return -1;
+}
+Node rightSibling(Node n,Tree *t){
+    if(n<0||n>t->maxNode){
+        return -1;
+    }
+    for(int i=n+1;i<=t->maxNode;i++){
+        if(t->P[i]==t->P[n]){
+            return i;
+        }
+    }
+    return -1;
+}
+void preorder(Node n,Tree *t){
+    if(n<0||n>t->maxNode){
+        return;
+    }
+    printf("%c",label(n,t));
+    Node child=leftmostChild(n,t);
+    while(child!=-1){
+        printf(" ");
+        preorder(child,t);
+        child=rightSibling(child,t);
+    }
+}
+void inorder(Node n,Tree *t){
+    if(n<0||n>t->maxNode){
+        return;
+    }
+    Node child=leftmostChild(n,t);
+    if (child != NULL_NODE) {
+        inorder(child, t);
+        printf(" ");
+    }
+    printf("%c",label(n,t));
+    child=rightSibling(child,t);
+    while(child!=-1){
+        printf(" ");
+        inorder(child,t);
+        child=rightSibling(child,t);
+    }
+}
+void postorder(Node n,Tree *t){
+    if(n<0||n>t->maxNode){
+        return;
+    }
+    Node child=leftmostChild(n,t);
+    while(child!=-1){
+        postorder(child,t);
+        child=rightSibling(child,t);
+        if (child != -1 || n != -1) {
+            printf(" ");
+        }
+    }
+    printf("%c",label(n,t));
+}
+int height(Node n,Tree *t){
+    if(n<0||n>t->maxNode){
+        return -1;
+    }
+    int Height=0;
+    Node child=leftmostChild(n,t);
+    while(child!=-1){
+        int childheight=height(child,t);
+        if(Height<childheight+1){
+           Height=childheight+1;
+        }
+        child=rightSibling(child,t);
+    }
+    return Height;
+}
+int depth(Node n, Tree *pT) {
+    if (n < 0 || n > pT->maxNode) {
+        return -1;
+    }
+    int Depth = 0;
+    Node temp = n;
+    while (pT->P[temp] != NULL_NODE) {
+        temp=pT->P[temp];
+        Depth++;
+    }
+    return Depth;
+}
+int main(){
+    Tree t;
+    int n;
+    scanf("%d", &n);    
+    t.maxNode = n - 1;  
+
+    for (int i = 0; i < n; i++) 
+        scanf(" %c", &t.L[i]);
+    t.P[0] = NULL_NODE;         
+    for (int i = 1; i < n; i++) 
+        scanf("%d", &t.P[i]);
+    preorder(0, &t);
+    printf("\n");
+    inorder(0, &t);
+    printf("\n");
+    postorder(0, &t);
+    printf("\n");
+    int u;
+    scanf("%d", &u);
+    printf("%d\n", height(u, &t));
+    printf("%d\n", depth(u, &t));
+}
+//buildTree(T)
+void buildTree(Tree *pT) {
+    // Set maxNode for 11 nodes (indices 0 to 10)
+    pT->maxNode = 10;
+
+    // Assign labels to nodes
+    pT->L[0] = 'I';  // Node 0
+    pT->L[1] = 'A';  // Node 1
+    pT->L[2] = 'C';  // Node 2
+    pT->L[3] = 'B';  // Node 3
+    pT->L[4] = 'G';  // Node 4
+    pT->L[5] = 'F';  // Node 5
+    pT->L[6] = 'H';  // Node 6
+    pT->L[7] = 'J';  // Node 7
+    pT->L[8] = 'E';  // Node 8
+    pT->L[9] = 'K';  // Node 9
+    pT->L[10] = 'D'; // Node 10
+
+    // Assign parents as specified
+    pT->P[0] = NULL_NODE; // Node 0 (I, root)
+    pT->P[1] = 0;        // Node 1 (A, parent I)
+    pT->P[2] = 0;        // Node 2 (C, parent I)
+    pT->P[3] = 0;        // Node 3 (B, parent I)
+    pT->P[4] = 1;        // Node 4 (G, parent A)
+    pT->P[5] = 1;        // Node 5 (F, parent A)
+    pT->P[6] = 1;        // Node 6 (H, parent A)
+    pT->P[7] = 3;        // Node 7 (J, parent B)
+    pT->P[8] = 5;        // Node 8 (E, parent F)
+    pT->P[9] = 5;        // Node 9 (K, parent F)
+    pT->P[10] = 8;       // Node 10 (D, parent E)
+}
+//makeNull(T)*
+void makeNull(Tree *t){
+    *t=NULL;
+}
+// empty(T)*
+int empty(Tree *t){
+    return *t==NULL;
+}
+//parent(n)*
+Node* parent(Node *n){
+    if(n==NULL){
+        return NULL;
+    }
+    return n->parent;
+}
+//leftmostChild(n)*
+Node* leftmostChild(Node *n){
+    if(n==NULL){
+        return NULL;
+    }
+    return n->leftmost_child;
+}
+//rightSibling(n)*
+Node* rightSibling(Node *n){
+    if(n==NULL){
+        return NULL;
+    }
+    return n->right_sibling;
+}
+//label(n)*
+LabelType label(Node *n){
+    if(n==NULL){
+        return '!';
+    }
+    return n->label;
+}
+//preorder(n)*
+void preorder(Node *n){
+    if(n==NULL){
+        return;
+    }
+    printf("%c ",n->label);
+    preorder(n->leftmost_child);
+    preorder(n->right_sibling);
+}
+//postorder(n)*
+void postorder(Node *n){
+    if(n==NULL){
+        return;
+    }
+    Node *child=leftmostChild(n);
+    while(child!=NULL){
+        postorder(child);
+        child=rightSibling(child);
+    }
+    printf("%c ",n->label);
+}
+// inorder(n)*
+void inorder(Node *n){
+    if(n==NULL){
+        return;
+    }
+    Node *child=leftmostChild(n);
+    if(child!=NULL){
+        inorder(child);
+    }
+    printf("%c ",n->label);
+    child=rightSibling(child);
+    while(child!=NULL){
+        inorder(child);
+        child=rightSibling(child);
+    }
+}
+// height(n)*
+int height(Node *n){
+    if(n==NULL){
+        return -1;
+    }
+    int Height=0;
+    Node *child=leftmostChild(n);
+    while(child!=NULL){
+        int childheight=height(child);
+        if(Height<childheight+1){
+            Height=childheight+1;
+        }
+        child=rightSibling(child);
+    }
+    return Height;
+}
+//depth(n)*
+int depth(Node *n){
+    if(n==NULL){
+        return -1;
+    }
+    if(parent(n)==NULL){
+        return 0;
+    }
+    return depth(parent(n))+1;
+}
+//create0(v)
+Tree create0(LabelType v){
+    Node *root=(Node *)malloc(sizeof(Node));
+    root->parent=NULL;
+    root->label=v;
+    root->leftmost_child=NULL;
+    root->right_sibling=NULL;
+    return root;
+}
+//create1(v, T1)
+Tree create1(LabelType v, Tree T1){
+    Node *root=(Node *)malloc(sizeof(Node));
+    root->label=v;
+    root->parent=NULL;
+    root->right_sibling=NULL;
+    root->leftmost_child=T1;
+    if(T1!=NULL){
+        return T1->parent=root;
+    }
+    if(T1==NULL){
+        printf("Error: T1 is null, cannot create1.\n");
+        return NULL;
+    }
+    return root;
+}
+//create2(v, T1, T2)
+Tree create2(LabelType v,Tree T1, Tree T2){
+    Node *root=(Node *)malloc(sizeof(Node));
+    root->label=v;
+    root->parent=NULL;
+    root->leftmost_child=T1;
+    root->right_sibling=NULL;
+    while(T1!=NULL||T2!=NULL){
+        T1->parent=root;
+        T2->parent=root;
+        break;
+    }
+    if(T1==NULL||T2==NULL){
+        printf("Error: T1 or T2 is null, cannot create2.\n");
+        return NULL;
+    }
+    T1->right_sibling=T2;
+    T2->right_sibling=NULL;
+    return root;
+}
+//insertNode(v, parent, leftSibling)
+Node *insertNode(LabelType v,Node *parent, Node *left){
+    Node *root=(Node *)malloc(sizeof(Node));
+    root->parent=parent;
+    root->label=v;
+    if(left){
+        root->right_sibling=left->right_sibling;
+        left->right_sibling=root;
+    }
+    else{
+        root->right_sibling=parent->leftmost_child;
+        parent->leftmost_child=root;
+    }
+    return root;
+}
+// appendNode(v, parent)
+Node *appendNode(LabelType v,Node *parent){
+    Node *root=(Node *)malloc(sizeof(Node));
+    root->parent=parent;
+    root->label=v;
+    root->leftmost_child=NULL;
+    root->right_sibling=NULL;
+    Node *left=parent->leftmost_child;
+    if(!left){
+        parent->leftmost_child=root;return root;
+    }
+    while(left->right_sibling!=NULL){
+        left=left->right_sibling;
+    }
+    left->right_sibling=root;
+    return root;
+}
+//locate(v, n)
+Node* locate(LabelType v, Tree n) {
+    if (n == NULL_NODE) {
+        return NULL_NODE;
+    }
+    if (n->label == v) {
+        return n;
+    }
+    for (Node* child = n->leftmost_child; child != NULL_NODE; child = child->right_sibling) {
+        Node* result = locate(v, child);
+        if (result != NULL_NODE) {
+            return result;
+        }
+    }
+    return NULL_NODE;
+}
+//buildTree()*
+       G
+      / \
+     Q   N
+    /     \
+   H       K
+  /
+ U
+Node* create_node(LabelType label) {
+    Node* node = (Node*)malloc(sizeof(Node));
+    node->parent = NULL_NODE;
+    node->leftmost_child = NULL_NODE;
+    node->right_sibling = NULL_NODE;
+    node->label = label;
+    return node;
+}
+
+// Function to build the tree with labels G, Q, N, H, K, U
+Tree buildTree() {
+    // Create nodes for each label
+    Node* G = create_node('G');
+    Node* Q = create_node('Q');
+    Node* N = create_node('N');
+    Node* H = create_node('H');
+    Node* K = create_node('K');
+    Node* U = create_node('U');
+
+    // Set up the tree structure based on provided relationships
+    // G: parent = NULL, leftmost_child = Q, right_sibling = NULL
+    G->leftmost_child = Q;
+
+    // Q: parent = G, leftmost_child = H, right_sibling = N
+    Q->parent = G;
+    Q->leftmost_child = H;
+    Q->right_sibling = N;
+
+    // N: parent = G, leftmost_child = K, right_sibling = NULL
+    N->parent = G;
+    N->leftmost_child = K;
+
+    // H: parent = Q, leftmost_child = U, right_sibling = NULL
+    H->parent = Q;
+    H->leftmost_child = U;
+
+    // K: parent = N, leftmost_child = NULL, right_sibling = NULL
+    K->parent = N;
+
+    // U: parent = H, leftmost_child = NULL, right_sibling = NULL
+    U->parent = H;
+
+    return G;
+}
+// create2(v, T1, T2)bt
+Tree create2(LabelType v, Tree T1, Tree T2) {
+    Node *root = (Node *)malloc(sizeof(Node));
+    root->label = v;
+    root->parent = NULL_NODE;
+    root->left = T1;
+    root->right = T2;
+    if (T1 != NULL_NODE) {
+        T1->parent = root; 
+    }
+    if (T2 != NULL_NODE) {
+        T2->parent = root; 
+    }
+    return root;
+}
+//buildTree()bt vs create0
+       B
+      /
+     C
+    / \
+   A   F
+  /     \
+ D       E
+ Tree buildTree(){
+    Node* B=create0('B');
+    Node* C=create0('C');
+    Node* A=create0('A');
+    Node* D=create0('D');
+    Node* F=create0('F');
+    Node* E=create0('E');
+    
+    B->left=C;
+    
+    C->parent=B;
+    C->left=A;
+    C->right=F;
+    
+    A->parent=C;
+    A->left=D;
+    
+    D->parent=A;
+    
+    F->parent=C;
+    F->right=E;
+    
+    E->parent=F;
+    return B;
+}
+//buildTree()bt vs create2
+       B
+      / \
+     C   F
+    / \   \
+   D   E   A
+   Tree buildTree(){
+    Node* B=create2('B',NULL,NULL);
+    Node* C=create2('C',NULL,NULL);
+    Node* D=create2('D',NULL,NULL);
+    Node* F=create2('F',NULL,NULL);
+    Node* A=create2('A',NULL,NULL);
+    Node* E=create2('E',NULL,NULL);
+    
+    B->left=C;
+    B->right=F;
+    
+    C->parent=B;
+    C->left=D;
+    C->right=E;
+    D->parent=C;
+    E->parent=C;
+    
+    F->parent=B;
+    F->right=A;
+    A->parent=F;
+    return B;
+}
+//preorder(n)bt
+void preorder(Node *n){
+    if(n==NULL){
+        return;
+    }
+    printf("%c ",n->label);
+    preorder(n->left);
+    preorder(n->right);
+}
+//inorder(n)bt
+void inorder(Node *n){
+    if(n==NULL){
+        return;
+    }
+    if(n!=NULL){
+        inorder(n->left);
+    }
+    printf("%c ",n->label);
+    while(n!=NULL){
+        inorder(n->right);
+        break;
+    }
+}
+//postorder(n)bt
+void postorder(Node *n){
+    if(n==NULL){
+        return;
+    }
+    while(n!=NULL){
+        postorder(n->left);
+        break;
+    }
+    postorder(n->right);
+    printf("%c ",n->label);
+}
+//preorder(n)bst
+void preorder(Node *n){
+    if(n==NULL){
+        return;
+    }
+    printf("%d ",n->label);
+    preorder(n->left);
+    preorder(n->right);
+}
+// inorder(n)bst
+void inorder(Node *n){
+    if(n==NULL){
+        return;
+    }
+    if(n!=NULL){
+        inorder(n->left);
+    }
+    printf("%d ",n->label);
+    while(n!=NULL){
+        inorder(n->right);
+        break;
+    }
+}
+//postorder(n)bst
+void postorder(Node *n){
+    if(n==NULL){
+        return;
+    }
+    while(n!=NULL){
+        postorder(n->left);
+        break;
+    }
+    postorder(n->right);
+    printf("%d ",n->label);
+}
+//insert(x, T)bst recursive
+1/
+void insert(LabelType x, Tree *pT) {
+    // Tru?ng h?p co b?n: cây r?ng, t?o node m?i
+    if (*pT == NULL) {
+        *pT = (Node*)malloc(sizeof(Node));
+        if (*pT == NULL) return; // Ki?m tra l?i c?p phát b? nh?
+        (*pT)->label = x;
+        (*pT)->left = NULL;
+        (*pT)->right = NULL;
+        return;
+    }
+    // N?u x dã t?n t?i, không làm gì
+    if ((*pT)->label == x) {
+        return;
+    }
+    
+    // Ð? quy chèn vào cây con thích h?p
+    if (x < (*pT)->label) {
+        insert(x, &((*pT)->left));
+    } else {
+        insert(x, &((*pT)->right));
+    }
+}
+2/
+void insert(LabelType x, Tree *pT) {
+    // Tru?ng h?p co b?n: cây r?ng, t?o node m?i
+    if (*pT == NULL) {
+        *pT = (Node*)malloc(sizeof(Node));
+        if (*pT == NULL) return; // Ki?m tra l?i c?p phát b? nh?
+        (*pT)->label = x;
+        (*pT)->left = NULL;
+        (*pT)->right = NULL;
+        return;
+    }
+    // N?u x dã t?n t?i, không làm gì
+    if ((*pT)->label == x) {
+        printf("Error: %d has existed in the tree. Cannot insert.\n",x);
+        return;
+    }
+    
+    // Ð? quy chèn vào cây con thích h?p
+    if (x < (*pT)->label) {
+        insert(x, &((*pT)->left));
+    } else {
+        insert(x, &((*pT)->right));
+    }
+}
+//insert(x, T)bst non-recursive
+1/
+void insert(LabelType x, Tree *pT) {
+    // Luu tr? node hi?n t?i và node cha
+    Node *temp = *pT;
+    Node *parent = NULL;
+
+    // Tìm v? trí d? chèn
+    while (temp != NULL) {
+        // N?u x dã t?n t?i, không làm gì
+        if (temp->label == x) {
+            return;
+        }
+        parent = temp;
+        if (x < temp->label) {
+            temp = temp->left;
+        } else {
+            temp = temp->right;
+        }
+    }
+
+    // T?o node m?i
+    Node *newNode = (Node*)malloc(sizeof(Node));
+    if (newNode == NULL) return; // Ki?m tra l?i c?p phát b? nh?
+    newNode->label = x;
+    newNode->left = NULL;
+    newNode->right = NULL;
+
+    // Chèn node m?i vào v? trí thích h?p
+    if (parent == NULL) {
+        // Cây r?ng, node m?i là g?c
+        *pT = newNode;
+    } else if (x < parent->label) {
+        parent->left = newNode;
+    } else {
+        parent->right = newNode;
+    }
+}
+2/
+void insert(LabelType x, Tree *pT) {
+    // Luu tr? node hi?n t?i và node cha
+    Node *temp = *pT;
+    Node *parent = NULL;
+
+    // Tìm v? trí d? chèn
+    while (temp != NULL) {
+        // N?u x dã t?n t?i, không làm gì
+        if (temp->label == x) {
+            printf("Error: %d has existed in the tree. Cannot insert.\n",x);
+            return;
+        }
+        parent = temp;
+        if (x < temp->label) {
+            temp = temp->left;
+        } else {
+            temp = temp->right;
+        }
+    }
+
+    // T?o node m?i
+    Node *newNode = (Node*)malloc(sizeof(Node));
+    if (newNode == NULL) return; // Ki?m tra l?i c?p phát b? nh?
+    newNode->label = x;
+    newNode->left = NULL;
+    newNode->right = NULL;
+
+    // Chèn node m?i vào v? trí thích h?p
+    if (parent == NULL) {
+        // Cây r?ng, node m?i là g?c
+        *pT = newNode;
+    } else if (x < parent->label) {
+        parent->left = newNode;
+    } else {
+        parent->right = newNode;
+    }
+}
+//delete(x, T)bst non-recursive
+1/deleteMin
+LabelType deleteMin(Tree *pT) {
+    if (*pT == NULL) return 0; // Cây r?ng, tr? v? 0 (gi? d?nh không h?p l?)
+
+    Node *temp = *pT;
+    Node *parent = NULL;
+
+    // Tìm node nh? nh?t (c?c trái)
+    while (temp->left != NULL) {
+        parent = temp;
+        temp = temp->left;
+    }
+
+    LabelType minValue = temp->label; // Luu giá tr? nh? nh?t
+
+    // Xóa node nh? nh?t
+    if (parent == NULL) {
+        // Node nh? nh?t là g?c
+        *pT = temp->right;
+    } else {
+        // G?n cây con ph?i c?a node nh? nh?t vào parent
+        parent->left = temp->right;
+    }
+
+    free(temp); // Gi?i phóng node
+    return minValue;
+}
+
+// Hàm xóa node có giá tr? x kh?i cây
+void delete(LabelType x, Tree *pT) {
+    if (*pT == NULL) return; // Cây r?ng ho?c không tìm th?y x
+
+    // Tìm node c?n xóa
+    if (x < (*pT)->label) {
+        delete(x, &((*pT)->left)); // Xóa ? cây con trái
+    } else if (x > (*pT)->label) {
+        delete(x, &((*pT)->right)); // Xóa ? cây con ph?i
+    } else {
+        // Tìm th?y node c?n xóa
+        Node *temp = *pT;
+
+        // Tru?ng h?p 1: Node không có con ho?c ch? có m?t con
+        if (temp->left == NULL) {
+            *pT = temp->right;
+            free(temp);
+        } else if (temp->right == NULL) {
+            *pT = temp->left;
+            free(temp);
+        } else {
+            // Tru?ng h?p 2: Node có c? hai con
+            // Thay th? b?ng giá tr? nh? nh?t c?a cây con ph?i
+            temp->label = deleteMin(&temp->right);
+        }
+    }
+}
+2/deleteMax
+// Hàm h? tr? d? xóa node l?n nh?t và tr? v? giá tr? c?a nó
+LabelType deleteMax(Tree *pT) {
+    if (*pT == NULL) return 0; // Cây r?ng, tr? v? 0 (có th? c?n di?u ch?nh)
+
+    Node *temp = *pT;
+    Node *parent = NULL;
+
+    // Tìm node l?n nh?t (c?c ph?i)
+    while (temp->right != NULL) {
+        parent = temp;
+        temp = temp->right;
+    }
+
+    LabelType maxValue = temp->label; // Luu giá tr? l?n nh?t
+
+    // Xóa node l?n nh?t
+    if (parent == NULL) {
+        // Node l?n nh?t là g?c
+        *pT = temp->left;
+    } else {
+        // G?n cây con trái c?a node l?n nh?t vào parent
+        parent->right = temp->left;
+    }
+
+    free(temp); // Gi?i phóng node
+    return maxValue;
+}
+
+// Hàm không d? quy d? xóa node có giá tr? x
+void delete(LabelType x, Tree *pT) {
+    Node *temp = *pT;
+    Node *parent = NULL;
+
+    // Tìm node c?n xóa và node cha c?a nó
+    while (temp != NULL && temp->label != x) {
+        parent = temp;
+        if (x < temp->label) {
+            temp = temp->left;
+        } else {
+            temp = temp->right;
+        }
+    }
+
+    // N?u không tìm th?y x, thoát
+    if (temp == NULL) return;
+
+    // Tru?ng h?p 1: Node không có con ho?c ch? có m?t con
+    if (temp->left == NULL) {
+        if (parent == NULL) {
+            *pT = temp->right; // Xóa g?c
+        } else if (temp == parent->left) {
+            parent->left = temp->right;
+        } else {
+            parent->right = temp->right;
+        }
+        free(temp);
+    } else if (temp->right == NULL) {
+        if (parent == NULL) {
+            *pT = temp->left; // Xóa g?c
+        } else if (temp == parent->left) {
+            parent->left = temp->left;
+        } else {
+            parent->right = temp->left;
+        }
+        free(temp);
+    } else {
+        // Tru?ng h?p 2: Node có c? hai con
+        // Thay th? b?ng giá tr? l?n nh?t c?a cây con trái
+        temp->label = deleteMax(&temp->left);
+    }
+}
+//delete(x, T)bst recursive
+// Hàm h? tr? d? quy d? xóa node nh? nh?t và tr? v? giá tr? c?a nó
+1/co deleteMin
+LabelType deleteMin(Tree *pT) {
+    if (*pT == NULL) return 0; // Cây r?ng, tr? v? 0 (có th? c?n di?u ch?nh)
+
+    // N?u không có con trái, dây là node nh? nh?t
+    if ((*pT)->left == NULL) {
+        LabelType minValue = (*pT)->label;
+        Node *temp = *pT;
+        *pT = (*pT)->right; // G?n cây con ph?i
+        free(temp); // Gi?i phóng node
+        return minValue;
+    }
+
+    // Ð? quy tìm node nh? nh?t ? cây con trái
+    return deleteMin(&((*pT)->left));
+}
+
+// Hàm d? quy d? xóa node có giá tr? x
+void delete(LabelType x, Tree *pT) {
+    if (*pT == NULL) return; // Cây r?ng ho?c không tìm th?y x
+
+    // Tìm node c?n xóa
+    if (x < (*pT)->label) {
+        delete(x, &((*pT)->left)); // Xóa ? cây con trái
+    } else if (x > (*pT)->label) {
+        delete(x, &((*pT)->right)); // Xóa ? cây con ph?i
+    } else {
+        // Tìm th?y node c?n xóa
+        Node *temp = *pT;
+
+        // Tru?ng h?p 1: Node không có con ho?c ch? có m?t con
+        if (temp->left == NULL) {
+            *pT = temp->right;
+            free(temp);
+        } else if (temp->right == NULL) {
+            *pT = temp->left;
+            free(temp);
+        } else {
+            // Tru?ng h?p 2: Node có c? hai con
+            // Thay th? b?ng giá tr? nh? nh?t c?a cây con ph?i
+            temp->label = deleteMin(&temp->right);
+        }
+    }
+}
+2/co deleteMax
+
+// Hàm h? tr? d? quy d? xóa node l?n nh?t và tr? v? giá tr? c?a nó
+LabelType deleteMax(Tree *pT) {
+    if (*pT == NULL) return 0; // Cây r?ng, tr? v? 0 (có th? c?n di?u ch?nh)
+
+    // N?u không có con ph?i, dây là node l?n nh?t
+    if ((*pT)->right == NULL) {
+        LabelType maxValue = (*pT)->label;
+        Node *temp = *pT;
+        *pT = (*pT)->left; // G?n cây con trái
+        free(temp); // Gi?i phóng node
+        return maxValue;
+    }
+
+    // Ð? quy tìm node l?n nh?t ? cây con ph?i
+    return deleteMax(&((*pT)->right));
+}
+
+// Hàm d? quy d? xóa node có giá tr? x
+void delete(LabelType x, Tree *pT) {
+    if (*pT == NULL) return; // Cây r?ng ho?c không tìm th?y x
+
+    // Tìm node c?n xóa
+    if (x < (*pT)->label) {
+        delete(x, &((*pT)->left)); // Xóa ? cây con trái
+    } else if (x > (*pT)->label) {
+        delete(x, &((*pT)->right)); // Xóa ? cây con ph?i
+    } else {
+        // Tìm th?y node c?n xóa
+        Node *temp = *pT;
+
+        // Tru?ng h?p 1: Node không có con ho?c ch? có m?t con
+        if (temp->left == NULL) {
+            *pT = temp->right;
+            free(temp);
+        } else if (temp->right == NULL) {
+            *pT = temp->left;
+            free(temp);
+        } else {
+            // Tru?ng h?p 2: Node có c? hai con
+            // Thay th? b?ng giá tr? l?n nh?t c?a cây con trái
+            temp->label = deleteMax(&temp->left);
+        }
+    }
+}
+
