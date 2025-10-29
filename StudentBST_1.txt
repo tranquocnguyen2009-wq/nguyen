@@ -1,0 +1,127 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+typedef struct {
+char name[50]; //full name
+int mark; //mark
+} LabelType;
+
+typedef struct NodeTag {
+LabelType label;
+struct NodeTag *left, *right;
+} Node;
+
+typedef Node *StudentBST; //a StudentBST is a pointer to the root of the tree
+
+void insert(char *name, int mark, StudentBST *pT) {
+	if((*pT) == NULL) {
+		(*pT) = (Node*)malloc(sizeof(Node));
+		(*pT)->label.mark = mark;
+		strcpy((*pT)->label.name, name);
+		(*pT)->left = NULL;
+        (*pT)->right = NULL;
+		return;
+	}
+	if(strcmp((*pT)->label.name, name ) == 0) {
+		printf("the name is exist.\n");
+		return;
+	} 
+	if(strcmp((*pT)->label.name, name) < 0) {
+		insert(name, mark, &(*pT)->right);
+	}
+	else insert(name, mark, &(*pT)->left);
+}
+
+int first;
+void inorder(StudentBST *pT) {
+    if (*pT == NULL) return;  
+    inorder(&(*pT)->left);
+	if(first == 1) {
+		printf("%s: %d", (*pT)->label.name, (*pT)->label.mark);
+		first = 0;	
+	} 
+	else {
+		printf(",\n%s: %d", (*pT)->label.name, (*pT)->label.mark);
+	} 
+    inorder(&(*pT)->right);
+}
+
+void printStudents(StudentBST *pT) {
+	first = 1;
+	inorder(pT);
+	printf("\n");
+	printf("==END==\n"); 
+}
+
+int retrieveMark(char *a, StudentBST *pT) {
+	if((*pT) == NULL) return 0;
+	if(strcmp(a, (*pT)->label.name) == 0) {
+		return (*pT)->label.mark;
+	}
+	if(strcmp(a, (*pT)->label.name) < 0) return retrieveMark(a, &(*pT)->left);
+	else return retrieveMark(a, &(*pT)->right);	
+} 
+
+
+int countByMark(int mark, StudentBST pT) {
+	if(pT == NULL) return 0;
+
+	return (pT->label.mark == mark ? 1 : 0) + countByMark(mark, pT->left) + countByMark(mark, pT->right);
+}
+
+int height(StudentBST pT) {
+	if(pT == NULL) return 0;
+		
+	return (height(pT->left) > height(pT->right) ? height(pT->left): height(pT->right)) + 1; 
+}
+
+int height1(StudentBST pT) {
+	if(pT == NULL) return 0;
+	int left = height1(pT->left);
+	int right = height1(pT->right);
+	if(left > right) return left + 1;
+	return right + 1;
+}
+
+void update(char *name, int mark, StudentBST *pT) {
+	if (*pT == NULL) return;
+
+	int cmp = strcmp(name, (*pT)->label.name);
+
+	if (cmp < 0) {
+		update(name, mark, &(*pT)->left);
+		return;
+	}
+
+	if (cmp > 0) {
+		update(name, mark, &(*pT)->right);
+		return;
+	}
+
+	(*pT)->label.mark = mark;
+	return;
+}
+
+
+int numberOfLeaves(Node *n) {
+	if(n == NULL) return 0;
+	
+	return ((n->left == NULL && n->right == NULL) ? 1 : 0) + numberOfLeaves(n->left) + numberOfLeaves(n->right);
+}
+
+int main() {
+	StudentBST studentBST = NULL;
+	insert("Harry Potter", 10, &studentBST);
+	insert("Hermione Granger", 8, &studentBST);
+	insert("Draco Malfoy", 8, &studentBST);
+	insert("Luna Lovegood", 8, &studentBST);
+	insert("Ron Weasley", 9, &studentBST);
+	printStudents(&studentBST);
+	update("Harry Potter", 1, &studentBST);
+	printStudents(&studentBST);
+	printf("Mark of %s is %d\n", "Harry Potter", retrieveMark("Harry Potter",&studentBST));
+	printf("The number of students having mark >= %d is %d\n", 8,countByMark(8, studentBST));
+	printf("\n number of leaves = %d",numberOfLeaves(studentBST));
+	printf("\n height = %d", height(studentBST));
+	return 0;
+}
